@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { IProduct } from './product.model';
-import { CartService } from '../cart.service';
+import { CartService } from '../cart/cart.service';
 import { ProductService } from './product.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'bot-cataloge',
@@ -9,17 +10,32 @@ import { ProductService } from './product.service';
   styleUrls: ['./cataloge.component.css']
 })
 export class CatalogeComponent {
-  products: IProduct[]=[];
+  products: IProduct[] = [];
   filter: string = "";
   //second way to inject service
   //private cardService2:CartService=Inject(CartService);
   //services are singletons, so we can inject them in the constructor
   ngOnInit() {
-    this.productSvc.getProducts().subscribe((products)=>{
-      this.products=products;
+    this.productSvc.getProducts().subscribe((products) => {
+      this.products = products;
+    });
+    //snapshot loads when component first loaded and does not reload on the component if links redirect the same page
+    //this.filter = this.route.snapshot.params["filter"];
+    //This one is used when we have parameter in URL
+    // this.route.params.subscribe((params) => {
+    //   this.filter = params["filter"] ?? '';
+    // });
+    //THis one is used when passed Querystring
+    this.route.queryParams.subscribe((params) => {
+      this.filter = params["filter"] ?? '';
     });
   }
-  constructor(private cartService:CartService,private productSvc: ProductService) {
+  constructor(
+    private cartService: CartService,
+    private productSvc: ProductService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     // this.products = [
     //   {
     //     id: 1,
@@ -201,7 +217,8 @@ export class CatalogeComponent {
       ? this.products
       : this.products.filter((product) => product.category == this.filter);
   }
-  addToCart(product:IProduct) {
+  addToCart(product: IProduct) {
     this.cartService.add(product);
+    this.router.navigate(['/cart']);
   }
 }
