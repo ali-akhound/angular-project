@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IProduct } from '../cataloge/product.model';
+import { CartComponent } from "../cart/cart.component";
 
 @Component({
   selector: 'bot-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.css'],
+  imports: [CartComponent]
 })
 export class ProductDetailsComponent {
   @Input() product!:IProduct;

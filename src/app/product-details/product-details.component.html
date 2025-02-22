@@ -12,6 +12,6 @@
       <div [style.color]="'red'" [ngStyle]="{color:product.discount>0?'green':''}" [ngClass]="{'strike-through': product.discount>0}">{{product.price | currency:'USD'}}</div>
       <div [class.strike-through]="product.discount>0">{{product.price | currency:'USD'}}</div>
       <div *ngIf="product.discount>0">{{product.price*(1-product.discount) | currency:'USD'}}</div>
-      <button class="cta" (click)="buyButtonClicked(product)">Buy</button>
+      <button class="cta" (click)="buyButtonClicked(product)">Buy</button>      
     </div>
   </div>
